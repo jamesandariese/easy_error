@@ -1,6 +1,7 @@
 package easy_error
 
 import "errors"
+import "os"
 
 var ErrUnknown = errors.New("Unknown error")
 func Apply(r interface{}) (err error) {
@@ -27,6 +28,11 @@ func Wrap(v interface{}, err error) (r interface{}) {
 }
 
 func WrapFile(v *os.File, err error) (r *os.File) {
+	AssertNil(err)
+	return v
+}
+
+func WrapBytes(v []byte, err error) (r []byte) {
 	AssertNil(err)
 	return v
 }
