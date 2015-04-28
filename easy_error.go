@@ -26,3 +26,7 @@ func Wrap(v interface{}, err error) (r interface{}) {
 	return v
 }
 
+func WrapFile(v *os.File, err error) (r *os.File) {
+	AssertNil(err)
+	return v
+}
