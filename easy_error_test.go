@@ -1,13 +1,14 @@
 package easy_error
 
 import (
-	"testing"
 	"errors"
+	"os"
+	"testing"
 )
 
 var testError = errors.New("test error")
 
-func testRecoverer() {
+func testRecoverer(t *testing.T) {
 	if r := recover(); r != nil {
 		if r == testError {
 			return
@@ -26,7 +27,7 @@ func successBytes() ([]byte, error) {
 
 func TestBytes(t *testing.T) {
 	WrapBytes(successBytes())
-	defer testRecoverer()
+	defer testRecoverer(t)
 	t.Error("Should not reach this point", WrapBytes(errorBytes()))
 }
 
@@ -38,9 +39,9 @@ func successFile() (*os.File, error) {
 	return nil, nil
 }
 
-func TestFile(t *testing.T) {		
+func TestFile(t *testing.T) {
 	WrapFile(successFile())
-	defer testRecoverer()
+	defer testRecoverer(t)
 	t.Error("Should not reach this point", WrapFile(errorFile()))
 }
 
@@ -54,6 +55,6 @@ func successInterface() (interface{}, error) {
 
 func TestInterface(t *testing.T) {
 	t.Logf("Logging to test compatibility with type assertion %s", Wrap(successInterface()).(string))
-	defer testRecoverer()
+	defer testRecoverer(t)
 	t.Error("Should not reach this point", Wrap(errorInterface()))
 }
